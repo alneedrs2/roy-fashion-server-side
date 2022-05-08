@@ -49,6 +49,25 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result);
     });
+
+    // PUT
+    app.put("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateProduct = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          quantity: updateProduct.quantity,
+        },
+      };
+      const result = await productCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
   } finally {
   }
 }
